@@ -4,40 +4,21 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 
-	"github.com/joho/godotenv"
-	"google.golang.org/genai"
+	"github.com/lakshya1goel/resume-assistant/config"
+	"github.com/lakshya1goel/resume-assistant/internal/ai"
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	config.LoadEnv()
+	apiKey := config.GetAPIKey()
 
-	apiKey := os.Getenv("GEMINI_API_KEY")
-	if apiKey == "" {
-		log.Fatal("GEMINI_API_KEY is not set")
-	}
+	client := ai.NewAIClient(apiKey)
 
-	ctx := context.Background()
-	client, err := genai.NewClient(ctx, &genai.ClientConfig{
-		APIKey: apiKey,
-	})
+	improvements, err := client.SuggestResumeImprovements(context.Background(), "resume.pdf", "https://tukatuu.com/job/ai-backend-developer")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	result, err := client.Models.GenerateContent(
-		ctx,
-		"gemini-2.5-flash",
-		genai.Text("Explain how AI works in a 100 words"),
-		nil,
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println(result.Text())
+	fmt.Println(improvements)
 }
