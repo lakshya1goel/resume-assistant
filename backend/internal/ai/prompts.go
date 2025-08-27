@@ -37,7 +37,7 @@ func (a *AIClient) AnalyzeResume(ctx context.Context, pdfBytes []byte, jobURL st
 }
 
 func (a *AIClient) prompt(jobURL string) string {
-	prompt := `
+	return `
 		You are a career coach. 
 
 		First, open the job posting URL and extract the relevant job description, requirements, and responsibilities from the job posting. Then analyze the uploaded resume PDF and suggest improvements to make it better aligned with the extracted job description.
@@ -53,6 +53,4 @@ func (a *AIClient) prompt(jobURL string) string {
 		5. Focus on actionable recommendations
 		6. Do not add any other text in the output like here is the analysis, here is the job description, etc.
 		`
-
-	return prompt
 }
