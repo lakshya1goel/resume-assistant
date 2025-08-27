@@ -1,4 +1,4 @@
-package router
+package routes
 
 import (
 	"github.com/gin-gonic/gin"
@@ -6,7 +6,8 @@ import (
 )
 
 func ResumeAnalysisRoutes(router *gin.RouterGroup, resumeAnalysisController *controller.ResumeAnalysisController) {
-	// resumeAnalysisRouter := router.Group("/api")
-	// {
-	// }
+	resumeAnalysisRouter := router.Group("/resume-analysis")
+	{
+		resumeAnalysisRouter.POST("/", resumeAnalysisController.AnalyzeResume)
+	}
 }

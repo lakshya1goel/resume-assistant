@@ -1,24 +1,20 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"log"
-
+	"github.com/gin-gonic/gin"
 	"github.com/lakshya1goel/resume-assistant/config"
-	"github.com/lakshya1goel/resume-assistant/internal/ai"
+	"github.com/lakshya1goel/resume-assistant/internal/api/controller"
+	"github.com/lakshya1goel/resume-assistant/internal/api/routes"
 )
 
 func main() {
 	config.LoadEnv()
-	apiKey := config.GetAPIKey()
 
-	client := ai.NewAIClient(apiKey)
-
-	improvements, err := client.SuggestResumeImprovements(context.Background(), "resume.pdf", "https://tukatuu.com/job/ai-backend-developer")
-	if err != nil {
-		log.Fatal(err)
+	router := gin.Default()
+	apiRouter := router.Group("/api")
+	{
+		routes.ResumeAnalysisRoutes(apiRouter, controller.NewResumeAnalysisController())
 	}
 
-	fmt.Println(improvements)
+	router.Run(":8084")
 }

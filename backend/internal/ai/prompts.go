@@ -2,24 +2,11 @@ package ai
 
 import (
 	"context"
-	"io"
-	"os"
 
 	"google.golang.org/genai"
 )
 
-func (a *AIClient) SuggestResumeImprovements(ctx context.Context, resumeFilePath, jobURL string) (string, error) {
-	file, err := os.Open(resumeFilePath)
-	if err != nil {
-		return "", err
-	}
-	defer file.Close()
-
-	pdfBytes, err := io.ReadAll(file)
-	if err != nil {
-		return "", err
-	}
-
+func (a *AIClient) AnalyzeResume(ctx context.Context, pdfBytes []byte, jobURL string) (string, error) {
 	prompt := a.prompt(jobURL)
 
 	parts := []*genai.Part{
