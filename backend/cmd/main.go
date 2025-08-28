@@ -1,6 +1,9 @@
 package main
 
 import (
+	"os"
+	"strings"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/lakshya1goel/resume-assistant/config"
@@ -13,13 +16,20 @@ func main() {
 
 	router := gin.Default()
 
-	// Configure CORS
-	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000"}, // Frontend URL
+	allowedOriginsEnv := os.Getenv("ALLOWED_ORIGINS")
+	var allowedOrigins []string
+
+	if allowedOriginsEnv != "" {
+		allowedOrigins = strings.Split(allowedOriginsEnv, ",")
+	}
+	corsConfig := cors.Config{
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
 		AllowCredentials: true,
-	}))
+	}
+
+	corsConfig.AllowOrigins = allowedOrigins
+	router.Use(cors.New(corsConfig))
 
 	apiRouter := router.Group("/api")
 	{
