@@ -175,7 +175,7 @@ export default function Home() {
                     required
                   />
                   <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-                    Paste the URL of the job posting you're applying for
+                    Paste the URL of the job posting you&apos;re applying for
                   </p>
                 </div>
 
